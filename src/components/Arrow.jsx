@@ -1,30 +1,44 @@
 import React from 'react';
-import { Arrow as KonvaArrow, Circle } from 'react-konva';
+import { Line, Circle, Group } from 'react-konva';
 
-const Arrow = ({ arrow, onDragStart, onDragMove, onDragEnd, zIndex }) => {
+const Arrow = ({ arrow, onDragStart, onDragMove, onDragEnd }) => {
+  const { startX, startY, endX, endY } = arrow;
+
+  // Calculate the position of the dot tip
+  const arrowVectorX = endX - startX;
+  const arrowVectorY = endY - startY;
+
+  // Normalize the vector to ensure the dot is placed at the arrow tip
+  const magnitude = Math.sqrt(arrowVectorX ** 2 + arrowVectorY ** 2);
+  const unitVectorX = arrowVectorX / magnitude;
+  const unitVectorY = arrowVectorY / magnitude;
+
+  // Calculate the position for the dot
+  const dotX = endX + unitVectorX * 5; // Offset by 5 units to stay attached at the tip
+  const dotY = endY + unitVectorY * 5;
+
   return (
-    <>
-      <KonvaArrow
-        points={[arrow.startX, arrow.startY, arrow.endX, arrow.endY]}
+    <Group
+      draggable
+      onDragStart={onDragStart}
+      onDragMove={onDragMove}
+      onDragEnd={onDragEnd}
+    >
+      <Line
+        points={[startX, startY, endX, endY]}
         stroke="black"
         strokeWidth={2}
-        onDragStart={onDragStart}
-        onDragMove={onDragMove}
-        onDragEnd={onDragEnd}
-        hitStrokeWidth={20} // Makes the dragging area larger
-        draggable
-        zIndex={zIndex}
+        lineCap="round"
+        lineJoin="round"
       />
       <Circle
-        Y={arrow.endY}
-        X={arrow.endX}
+        x={dotX}
+        y={dotY}
         radius={5}
         fill="lightcoral"
-        draggable
-        onDragMove={onDragMove}
-        zIndex={zIndex}
+        draggable={false}
       />
-    </>
+    </Group>
   );
 };
 
