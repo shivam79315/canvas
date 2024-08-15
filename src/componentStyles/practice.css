@@ -1,0 +1,11 @@
+.stageContainer {
+    background-color: aqua;
+    width:100vw;
+    min-width: 1400px;
+    height: 100vh;
+}
+
+.text {
+    font-size: 20px;
+    font-weight: 600;
+}
