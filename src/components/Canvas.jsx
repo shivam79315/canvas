@@ -78,8 +78,8 @@ const Canvas = () => {
         onDragStart={() => handleDragStart({ type: "card", id: card.id })}
         onDragEnd={handleDragEnd}
         onDragMove={handleDragMove}
-        onShowMore={(card) => setSelectedCard(card)}
-        zIndex={10}
+        onShowMore={() => setSelectedCard(card)}
+        onDelete={() => setCards(cards.filter((c) => c.id !== card.id))}
       />
     ));
   };
@@ -99,7 +99,6 @@ const Canvas = () => {
           handleDragMove(e);
         }}
         onDragEnd={handleDragEnd}
-        zIndex={10}
       />
     ));
   };
@@ -116,7 +115,6 @@ const Canvas = () => {
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
-        style={{ zIndex: 10, position: "relative" }}
       >
         <Layer>{renderCards()}</Layer>
         <Layer>{renderArrows()}</Layer>
@@ -132,12 +130,13 @@ const Canvas = () => {
           transform: "translateX(-50%)",
           width: "150px",
           height: "100px",
-          backgroundColor: deleteBoxHovered ? "red" : "gray",
+          backgroundColor: deleteBoxHovered ? "red" : "#ececec",
           textAlign: "center",
           lineHeight: "100px",
-          color: "white",
+          color: "#385170",
           fontWeight: "bold",
-          zIndex: 5, // Lower zIndex to ensure it's behind cards and arrows
+          borderRadius: "10px",
+          zIndex: 5,
         }}
       >
         Drag Here to Delete

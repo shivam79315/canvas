@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Rect, Text, Group } from 'react-konva';
 
-const Card = ({ card, onShowMore }) => {
+const Card = ({ card, onShowMore, onDelete }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [cardSize, setCardSize] = useState({ width: card.width, height: card.height });
 
   const handleShowMore = () => {
     setIsExpanded(!isExpanded);
-    onShowMore(card);
+    onShowMore(card); // Maintain global modal logic
   };
 
   const handleResize = (action) => {
@@ -50,8 +50,8 @@ const Card = ({ card, onShowMore }) => {
       
       <Text
         x={card.x + 10}
-        y={card.y + 50}
-        text={isExpanded ? card.text : card.text.slice(0, 30) + '...'}
+        y={card.y + 20}
+        text={isExpanded ? card.text : `${card.text.slice(0, 30)}...`}
         width={cardSize.width - 20}
         height={cardSize.height - 60}
         fontSize={14}
@@ -61,29 +61,43 @@ const Card = ({ card, onShowMore }) => {
       />
 
       <Text
-        x={card.x + cardSize.width - 30}
+        x={card.x + cardSize.width - 80}
         y={card.y + cardSize.height - 40}
         text="Show More"
         fill="blue"
         onClick={handleShowMore}
+        fontStyle="italic"
+        cursor="pointer"
       />
 
       <Text
-        x={card.x + cardSize.width - 30}
-        y={card.y + cardSize.height - 80}
-        text="+" 
+        x={card.x + cardSize.width - 80}
+        y={card.y + cardSize.height - 20}
+        text="Delete"
+        fill="lightcoral"
+        onClick={() => onDelete(card.id)}
+        fontStyle="italic"
+        cursor="pointer"
+      />
+
+      <Text
+        x={card.x + 30}
+        y={card.y + 5}
+        text="+"
         fill="green"
         fontSize={32}
         onClick={() => handleResize('increase')}
+        cursor="pointer"
       />
 
       <Text
-        x={card.x + cardSize.width - 70}
-        y={card.y + cardSize.height - 80}
-        text="-" 
+        x={card.x + 10}
+        y={card.y + 3}
+        text="-"
         fill="red"
         fontSize={32}
         onClick={() => handleResize('decrease')}
+        cursor="pointer"
       />
     </Group>
   );
