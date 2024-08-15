@@ -1,4 +1,3 @@
-// src/components/Card.js
 import React, { useState } from 'react';
 import { Rect, Text, Group } from 'react-konva';
 
@@ -12,9 +11,9 @@ const Card = ({ card, onShowMore }) => {
   };
 
   const handleResize = (action) => {
-    const increment = 20; // Increment or decrement value for resizing
-    const maxSize = { width: 400, height: 300 }; // Maximum size for the card
-    const minSize = { width: 100, height: 80 }; // Minimum size for the card
+    const increment = 20;
+    const maxSize = { width: 400, height: 300 };
+    const minSize = { width: 100, height: 80 };
 
     let newWidth = cardSize.width;
     let newHeight = cardSize.height;
@@ -42,36 +41,49 @@ const Card = ({ card, onShowMore }) => {
         width={cardSize.width}
         height={cardSize.height}
         cornerRadius={10}
-        fill="lightblue"
+        fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+        fillLinearGradientEndPoint={{ x: cardSize.width, y: cardSize.height }}
+        fillLinearGradientColorStops={[0, 'lightblue', 1, 'blue']}
+        shadowBlur={10}
+        shadowOpacity={0.6}
       />
       
       <Text
         x={card.x + 10}
+        y={card.y + 50}
+        text={isExpanded ? card.text : card.text.slice(0, 30) + '...'}
+        width={cardSize.width - 20}
+        height={cardSize.height - 60}
+        fontSize={14}
+        fill="black"
+        align="justify"
+        wrap="word"
+      />
+
+      <Text
+        x={card.x + cardSize.width - 30}
         y={card.y + cardSize.height - 40}
         text="Show More"
         fill="blue"
         onClick={handleShowMore}
       />
+
       <Text
-        x={card.x + 20}
-        y={card.y + 3}
-        text="+"
+        x={card.x + cardSize.width - 30}
+        y={card.y + cardSize.height - 80}
+        text="+" 
         fill="green"
         fontSize={32}
         onClick={() => handleResize('increase')}
       />
+
       <Text
-        x={card.x}
-        y={card.y}
-        text="-"
+        x={card.x + cardSize.width - 70}
+        y={card.y + cardSize.height - 80}
+        text="-" 
         fill="red"
         fontSize={32}
         onClick={() => handleResize('decrease')}
-      />
-      <Text
-        x={card.x + 10}
-        y={card.y + 70}
-        text={isExpanded ? card.text : card.text.slice(0, 10) + '...'}
       />
     </Group>
   );
